@@ -4,6 +4,9 @@
 **/.DS_Store
 **/*.iml
 
+#AWS
+.aws/*
+
 # Javascript
 
 # Logs

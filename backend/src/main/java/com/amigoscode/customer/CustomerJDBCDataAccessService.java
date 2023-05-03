@@ -21,7 +21,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public List<Customer> selectAllCustomers() {
         var sql = """
-                SELECT id, name, email, password, age, gender
+                SELECT id, name, email, password, age, gender, profile_image_id
                 FROM customer
                 LIMIT 1000
                 """;
@@ -32,7 +32,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public Optional<Customer> selectCustomerById(Integer id) {
         var sql = """
-                SELECT id, name, email, password, age, gender
+                SELECT id, name, email, password, age, gender, profile_image_id
                 FROM customer
                 WHERE id = ?
                 """;
@@ -44,8 +44,8 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public void insertCustomer(Customer customer) {
         var sql = """
-                INSERT INTO customer(name, email, password, age, gender)
-                VALUES (?, ?, ?, ?, ?)
+                INSERT INTO customer(name, email, password, age, gender, profile_image_id)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """;
         int result = jdbcTemplate.update(
                 sql,
@@ -53,7 +53,8 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
                 customer.getEmail(),
                 customer.getPassword(),
                 customer.getAge(),
-                customer.getGender().name()
+                customer.getGender().name(),
+                customer.getProfileImageId()
         );
 
         System.out.println("insertCustomer result " + result);
@@ -125,7 +126,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public Optional<Customer> selectUserByEmail(String email) {
         var sql = """
-                SELECT id, name, email, password, age, gender
+                SELECT id, name, email, password, age, gender, profile_image_id
                 FROM customer
                 WHERE email = ?
                 """;
@@ -133,4 +134,14 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
                 .stream()
                 .findFirst();
     }
+
+	@Override
+	public void updateCustomerProfileImageId(String profileImageId, Integer customerId) {
+		var sql = """
+				update customer
+				set profile_image_id = ?
+				where id = ?
+				""";
+		jdbcTemplate.update(sql, profileImageId, customerId);
+	}
 }

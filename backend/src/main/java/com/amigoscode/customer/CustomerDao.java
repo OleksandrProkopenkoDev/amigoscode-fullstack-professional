@@ -8,8 +8,9 @@ public interface CustomerDao {
     Optional<Customer> selectCustomerById(Integer id);
     void insertCustomer(Customer customer);
     boolean existsCustomerWithEmail(String email);
-    boolean existsCustomerById(Integer id);
+    boolean existsCustomerById(Integer customerId);
     void deleteCustomerById(Integer customerId);
     void updateCustomer(Customer update);
     Optional<Customer> selectUserByEmail(String email);
+    void updateCustomerProfileImageId(String profileImageId, Integer customerId);
 }
